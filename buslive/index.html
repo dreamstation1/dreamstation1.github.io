@@ -18,8 +18,13 @@
   <p id="msg">연결하는 중이에요</p>
 </main>
 <script>
-fetch('link.txt?t=' + Date.now(), { cache: 'no-store' })
-  .then(function (r) { if (!r.ok) throw 0; return r.text(); })
+function read(url, options) {
+  return fetch(url, options).then(function (r) { if (!r.ok) throw 0; return r.text(); });
+}
+// The API has the new address at once; the Pages copy can lag by minutes.
+read('https://api.github.com/repos/dreamstation1/dreamstation1.github.io/contents/buslive/link.txt?t=' + Date.now(),
+     { cache: 'no-store', headers: { Accept: 'application/vnd.github.raw+json' } })
+  .catch(function () { return read('link.txt?t=' + Date.now(), { cache: 'no-store' }); })
   .then(function (t) {
     var url = t.trim();
     if (!/^https:\/\/[a-z0-9-]+\.trycloudflare\.com$/.test(url)) throw 0;
