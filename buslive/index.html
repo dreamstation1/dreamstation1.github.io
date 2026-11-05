@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>BusLive</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b6fd6; color: #fff; font: 16px/1.5 "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif; text-align: center; }
+  main { padding: 16px; }
+  b { display: block; font-size: 26px; }
+  a { color: #fff; }
+</style>
+</head>
+<body>
+<main>
+  <b>BusLive</b>
+  <p id="msg">연결하는 중이에요</p>
+</main>
+<script>
+fetch('link.txt?t=' + Date.now(), { cache: 'no-store' })
+  .then(function (r) { if (!r.ok) throw 0; return r.text(); })
+  .then(function (t) {
+    var url = t.trim();
+    if (!/^https:\/\/[a-z0-9-]+\.trycloudflare\.com$/.test(url)) throw 0;
+    location.replace(url);
+  })
+  .catch(function () {
+    document.getElementById('msg').textContent = '주소를 불러오지 못했어요. 잠시 뒤 새로고침해 주세요.';
+  });
+</script>
+</body>
+</html>
